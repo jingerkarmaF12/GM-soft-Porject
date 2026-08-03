@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\AuditLog;
 
 class AuthController extends Controller
 {
@@ -28,6 +28,7 @@ class AuthController extends Controller
                 'message'=>'Email ou mot de passe incorrect.'
             ],401);
         }
+        
 
         return $this->respondWithToken($token);
     }
