@@ -121,7 +121,16 @@ class UtilisateurController extends Controller
 
 
 
-        $utilisateur->update($request->all());
+        $utilisateur->update($request->only([
+    'nom',
+    'prenom',
+    'email',
+    'telephone',
+    'photo_profil',
+    'statut',
+    'id_role',
+    'id_specialite',
+]));
 
 
         return response()->json([

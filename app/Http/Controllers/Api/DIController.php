@@ -108,7 +108,7 @@ class DemandeInterventionController extends Controller
             'statut',
             'date_validation',
             'id_equipement',
-            'id_utilisateur',
+            //'id_utilisateur',
         ]));
 
         return response()->json([

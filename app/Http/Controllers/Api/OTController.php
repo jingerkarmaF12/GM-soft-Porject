@@ -34,6 +34,7 @@ public function store(Request $request)
         'description' => 'required|string',
         'priorite' => 'required|in:faible,moyenne,elevee,critique',
         'date_planifiee' => 'nullable|date',
+        'id_demande' => 'required|integer|exists:DemandeInterventions,id_demande',
     ]);
 
     return DB::transaction(function () use ($request) {
@@ -130,7 +131,7 @@ public function store(Request $request)
 
         'date_planifiee' => 'nullable|date',
         'date_debut' => 'nullable|date',
-        'date_fin' => 'nullable|date',
+        'date_fin' => 'nullable|date|after_or_equal:date_debut',
 
         'temps_reel' => 'nullable|integer|min:0',
 
