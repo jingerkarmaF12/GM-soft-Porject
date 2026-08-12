@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
-    {
+    {   
+        $this->call([
+        RoleSeeder::class,
+         ]);
         Utilisateur::create([
             'nom' => 'Admin',
             'prenom' => 'System',
@@ -21,5 +24,6 @@ class DatabaseSeeder extends Seeder
             'id_role' => 1,
             'id_specialite' => null,
         ]);
+        
     }
 }

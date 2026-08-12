@@ -1,35 +1,34 @@
-FROM php:8.1-fpm
+FROM php:8.4-cli
 
-# System deps
 RUN apt-get update && apt-get install -y \
-	git \
-	curl \
-	zip \
-	unzip \
-	libpng-dev \
-	libonig-dev \
-	libxml2-dev \
-	libzip-dev \
-	libpq-dev \
-	&& docker-php-ext-install pdo pdo_mysql zip bcmath sockets xml gd
+    git \
+    unzip \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev
 
-# Install composer
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    bcmath \
+    gd \
+    zip
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
-# Copy composer files and install dependencies
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev || true
+COPY . .
 
-# Copy application
-COPY . /var/www/html
+# Create Laravel required directories
+RUN mkdir -p bootstrap/cache storage/framework/cache \
+    storage/framework/sessions storage/framework/views
 
-# Ensure storage and bootstrap cache permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
+# Give permissions
+RUN chmod -R 775 storage bootstrap/cache
 
-EXPOSE 9000
+RUN composer install
 
-CMD ["php-fpm"]
+EXPOSE 8001
+
+CMD ["sh", "-c", "until php artisan migrate --force; do echo 'Waiting for MySQL...'; sleep 3; done; php artisan serve --host=0.0.0.0 --port=8000"]

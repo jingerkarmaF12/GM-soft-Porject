@@ -1,38 +1,21 @@
-version: "3.8"
-
 services:
-  app:
-    image: php:8.2-fpm
-    container_name: laravel_app
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html
+  backend:
+    build: .
     ports:
-      - "8000:8000"
+      - "8001:8000"
+    env_file:
+      - .env
     environment:
-      APP_ENV: local
-      APP_DEBUG: '1'
       DB_HOST: db
-      DB_DATABASE: laravel
-      DB_USERNAME: laravel
-      DB_PASSWORD: secret
+      DB_PORT: 3306
+      DB_DATABASE: gmao
+      DB_USERNAME: root
+      DB_PASSWORD: root
     depends_on:
       - db
-    command: bash -lc "php artisan serve --host=0.0.0.0 --port=8000"
 
   db:
     image: mysql:8.0
-    container_name: laravel_db
-    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
-    ports:
-      - "3306:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-
-volumes:
-  dbdata:
+      MYSQL_DATABASE: gmao
+      MYSQL_ROOT_PASSWORD: root

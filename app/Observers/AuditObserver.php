@@ -26,7 +26,7 @@ class AuditObserver
             'adresse_ip' => request()->ip(),
             'navigateur' => request()->userAgent(),
             'date_action' => now(),
-            'id_utilisateur' => Auth::id(),
+            'id_utilisateur' => Auth::id() ?? $model->getKey(),
         ]);
     }
 
