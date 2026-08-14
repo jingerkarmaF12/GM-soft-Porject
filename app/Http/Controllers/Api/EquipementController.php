@@ -49,7 +49,6 @@ class EquipementController extends Controller
         config('app.key')
     );
 
-    // إنشاء الجهاز أولا
     $equipement = Equipement::create([
         'nom_equipement' => $request->nom_equipement,
         'marque' => $request->marque,

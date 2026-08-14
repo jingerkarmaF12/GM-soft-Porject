@@ -92,23 +92,19 @@ class DemandeInterventionController extends Controller
 
             'priorite' => 'sometimes|in:faible,moyenne,elevee,critique',
 
-            'statut' => 'sometimes|in:en_attente,validee,refusee,en_cours,terminee',
-
             'date_validation' => 'nullable|date',
 
             'id_equipement' => 'sometimes|exists:equipements,id_equipement',
 
-            'id_utilisateur' => 'sometimes|exists:utilisateurs,id_utilisateur',
         ]);
 
         $demande->update($request->only([
             'titre',
             'description',
             'priorite',
-            'statut',
             'date_validation',
             'id_equipement',
-            //'id_utilisateur',
+            
         ]));
 
         return response()->json([
@@ -136,4 +132,6 @@ class DemandeInterventionController extends Controller
             'message' => 'Demande supprimée avec succès.'
         ]);
     }
+
+    
 }

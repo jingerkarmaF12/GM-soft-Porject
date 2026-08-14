@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\OrdreTravail;
 use App\Models\DemandeIntervention;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class OrdreTravailController extends Controller
 {

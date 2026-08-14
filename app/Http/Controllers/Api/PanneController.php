@@ -60,7 +60,6 @@ $panne = Panne::create([
     'solution' => $request->solution,
     'symptomes' => $request->symptomes,
 
-    // كنجيب id_equipement من OT
     'id_equipement' => $ordreTravail->id_equipement,
 
     'id_ot' => $ordreTravail->id_ot,

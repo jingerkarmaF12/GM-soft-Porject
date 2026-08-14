@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Notifications\UserAccountCreated;
+use Illuminate\Support\Str;
 class UtilisateurController extends Controller
 {
 
@@ -30,12 +31,12 @@ class UtilisateurController extends Controller
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
             'email' => 'required|email|unique:utilisateurs,email',
-            'mot_de_passe' => 'required|min:6',
             'telephone' => 'nullable|string|max:20',
             'photo_profil' => 'nullable|string',
             'id_role' => 'required|integer',
             'id_specialite' => 'nullable|integer'
         ]);
+        $temporaryPassword = Str::random(12);
 
 
         $utilisateur = Utilisateur::create([
@@ -46,7 +47,7 @@ class UtilisateurController extends Controller
 
             'email' => $request->email,
 
-            'mot_de_passe' => Hash::make($request->mot_de_passe),
+            'mot_de_passe' => Hash::make($temporaryPassword),
 
             'telephone' => $request->telephone,
 
@@ -57,6 +58,10 @@ class UtilisateurController extends Controller
             'id_specialite' => $request->id_specialite
 
         ]);
+
+        $utilisateur->notify(
+        new UserAccountCreated($temporaryPassword)
+    );
 
 
         return response()->json([
